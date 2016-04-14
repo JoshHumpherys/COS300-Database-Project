@@ -12,7 +12,7 @@
 <li><a href="ServiceMaintForm.php">Service</a></li>
 </ul>
 <br>
-<form action="CustomerAct.php" method="post">
+<form action="index.php" method="post">
 <select name="action_type">
 <option value="add">Add</option>
 <option value="update">Update</option>
