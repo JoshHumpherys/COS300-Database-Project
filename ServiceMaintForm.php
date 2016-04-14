@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-<H1>Marica Dry Cleaning Customer Maintenance</H1>
+<H1>Marica Dry Cleaning Service Maintenance</H1>
 <ul>
 <li><a href="index.php">Customer</a></li>
 <li><a href="OrderForm.php">Order</a></li>
@@ -12,7 +12,7 @@
 <li><a href="ServiceMaintForm.php">Service</a></li>
 </ul>
 <br>
-<form action="index.php" method="post">
+<form action="ServiceMaintForm.php" method="post">
 <select name="action_type">
 <option value="add">Add</option>
 <option value="update">Update</option>
