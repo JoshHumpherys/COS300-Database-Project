@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <?php require "header.php"; ?>
 <body>
 <form action="index.php" method="post">

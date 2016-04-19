@@ -1,9 +1,6 @@
 <head>
-    <meta charset="UTF-8">
     <title>Marica Dry Cleaning Service Maintenance</title>
-    <link rel="stylesheet" href="css/style.css"/>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
     <H1>Marica Dry Cleaning Customer Maintenance</H1>
     <ul>
         <li><a href="index.php">Customer</a></li>
