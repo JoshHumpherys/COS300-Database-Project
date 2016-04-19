@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>Marica Dry Cleaning Service Maintenance</title>
-<link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
 <?php require "header.php";?>
