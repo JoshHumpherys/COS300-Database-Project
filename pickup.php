@@ -4,15 +4,15 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-<H1>Marica Dry Cleaning Service Maintenance</H1>
+<H1>Marica Dry Cleaning Customer Pick Up</H1>
 <ul>
 <li><a href="index.php">Customer</a></li>
-<li><a href="OrderForm.php">Order</a></li>
-<li><a href="PickUp.php">Pick Up</a></li>
-<li><a href="ServiceMaintForm.php">Service</a></li>
+<li><a href="order.php">Order</a></li>
+<li><a href="pickup.php">Pick Up</a></li>
+<li><a href="service.php">Service</a></li>
 </ul>
 <br>
-<form action="ServiceMaintForm.php" method="post">
+<form action="pickup.php" method="post">
 <select name="action_type">
 <option value="add">Add</option>
 <option value="update">Update</option>

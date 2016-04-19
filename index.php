@@ -7,9 +7,9 @@
 <H1>Marica Dry Cleaning Customer Maintenance</H1>
 <ul>
 <li><a href="index.php">Customer</a></li>
-<li><a href="OrderForm.php">Order</a></li>
-<li><a href="PickUp.php">Pick Up</a></li>
-<li><a href="ServiceMaintForm.php">Service</a></li>
+<li><a href="order.php">Order</a></li>
+<li><a href="pickup.php">Pick Up</a></li>
+<li><a href="service.php">Service</a></li>
 </ul>
 <br>
 <form action="index.php" method="post">
