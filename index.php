@@ -1,17 +1,10 @@
 <html>
 <head>
 <title>Marica Dry Cleaning Service Maintenance</title>
-<link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
-<H1>Marica Dry Cleaning Customer Maintenance</H1>
-<ul>
-<li><a href="index.php">Customer</a></li>
-<li><a href="OrderForm.php">Order</a></li>
-<li><a href="PickUp.php">Pick Up</a></li>
-<li><a href="ServiceMaintForm.php">Service</a></li>
-</ul>
-<br>
+<?php require "header.php";?>
 <form action="index.php" method="post">
 <select name="action_type">
 <option value="add">Add</option>

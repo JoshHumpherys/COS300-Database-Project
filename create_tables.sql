@@ -2,35 +2,50 @@ DROP SCHEMA IF EXISTS `marciadb`;
 CREATE SCHEMA `marciadb`;
 USE `marciadb`;
 
-CREATE TABLE CUSTOMER (
+CREATE TABLE `customer` (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
     FirstName VARCHAR(45) NOT NULL,
     LastName VARCHAR(45) NOT NULL,
-    Phone VARCHAR(45) NOT NULL,
     Email VARCHAR(255),
     Address VARCHAR(255),
     HasMembership BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE ORDER_INFO (
+CREATE TABLE `phone` (
+    CustomerID INT,
+    Phone VARCHAR(45),
+    PRIMARY KEY (CustomerID, Phone),
+    FOREIGN KEY (CustomerID) REFERENCES `customer`(CustomerID) ON UPDATE RESTRICT
+);
+
+CREATE TABLE `order` (
     OrderID INT PRIMARY KEY AUTO_INCREMENT,
-    DropDate DATE,
+    DropDate DATE NOT NULL,
     PromiseDate DATE,
     PickupDate DATE,
     MethodOfPayment VARCHAR(45),
-    CUSTOMER_CustomerID INT NOT NULL,
-    FOREIGN KEY (CUSTOMER_CustomerID) REFERENCES CUSTOMER(CustomerID) ON UPDATE RESTRICT
+    CustomerID INT NOT NULL,
+    FOREIGN KEY (CustomerID) REFERENCES `customer`(CustomerID) ON UPDATE RESTRICT
 );
 
-CREATE TABLE SERVICE (
+CREATE TABLE `order_item` (
+    OrderItemID INT PRIMARY KEY AUTO_INCREMENT,
+    Quantity INT NOT NULL,
+    Description VARCHAR(255),
+    Instructions VARCHAR(255)
+);
+
+CREATE TABLE `service` (
     ServiceID INT PRIMARY KEY AUTO_INCREMENT,
     Description VARCHAR(255),
-    Price DECIMAL(10, 2),
-    HoursRequired INT
+    Price DECIMAL(10, 2) NOT NULL,
+    HoursRequired INT NOT NULL
 );
 
-CREATE TABLE ORDER_HAS_SERVICE (
-    ORDER_INFO_OrderId INT,
-    SERVICE_ServiceID INT,
-    PRIMARY KEY (ORDER_INFO_OrderID, SERVICE_ServiceID)
+CREATE TABLE `order_item_has_service` (
+    OrderItemID INT,
+    ServiceID INT,
+    PRIMARY KEY (OrderItemID, ServiceID),
+    FOREIGN KEY (OrderItemID) REFERENCES `order_item`(OrderItemID) ON UPDATE RESTRICT,
+    FOREIGN KEY (ServiceID) REFERENCES `service`(ServiceID) ON UPDATE RESTRICT
 );
