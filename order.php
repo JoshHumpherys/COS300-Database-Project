@@ -24,11 +24,11 @@ $services=$mysqli->query($query1);
         $rs=$services->fetch_array();
         if($rs[2]!=0){
             $select= 'Service: <select name="action_type">';
-            while($rs=mysql_fetch_array($services)){
-                $select='<option value="'.$rs['serviceid'].'">'.$rs['description'].'<?option>';
+            while($rs=$services->fetch_array()){
+                $select.='<option value='.$rs[0].'>'.$rs[1].'</option>';
             }
         }
-        $select='</select>';
+        $select.='</select>';
         echo $select;
         ?>
         Type Of Payment: <select name="payment_type">
