@@ -2,7 +2,8 @@
 <html>
 <?php require "header.php"; ?>
 <body>
-<div class="container">
+<div class="container" style="padding-top:15px;">
+    <button class="btn btn-success btn-lg" data-title="Add" data-toggle="modal" data-target="#add"><span class="glyphicon glyphicon-plus"></span> Add Customer</button>
     <h2>Customers</h2>
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
@@ -30,8 +31,12 @@
                 $mysqli->query("DELETE FROM customer WHERE CustomerID = ".$_POST['delete_confirm_button_name']);
             }
             if(isset($_POST['edit_confirm_button_name'])) {
-                $query = "UPDATE customer SET FirstName = '".$_POST['first_name']."', LastName = '".$_POST['last_name']."', Email = '".$_POST['email']."', Address = '".$_POST['address']."', HasMembership = FALSE WHERE CustomerID = ".$_POST['edit_confirm_button_name'];
+                $query = "UPDATE customer SET FirstName = '".$_POST['first_name']."', LastName = '".$_POST['last_name']."', Email = '".$_POST['email']."', Address = '".$_POST['address']."', HasMembership = ".($_POST['member_yes'] == "on"?'TRUE':'FALSE')." WHERE CustomerID = ".$_POST['edit_confirm_button_name'];
                 $mysqli->query($query);
+            }
+            if(isset($_POST['add_confirm_button_name'])) {
+                $mysqli->query("INSERT INTO customer VALUES(DEFAULT, '".$_POST['first_name_add']."', '".$_POST['last_name_add']."', '".$_POST['email_add']."', '".$_POST['address_add']."', ".($_POST['member_yes_add'] == "on"?'TRUE':'FALSE').")");
+                $mysqli->query("INSERT INTO phone VALUES(".$mysqli->insert_id.", '".$_POST['phone_add']."')");
             }
 
             $columns = "customer.CustomerID, FirstName, LastName, Email, Address, HasMembership, Phone";
@@ -143,7 +148,7 @@
                         </div>
                         <label>Member:</label>
                         <label class="radio-inline">
-                            <input type="radio" id="member_yes" name="member">Yes
+                            <input type="radio" id="member_yes" name="member_yes">Yes
                         </label>
                         <label class="radio-inline">
                             <input type="radio" id="member_no" name="member_no">No
@@ -156,6 +161,57 @@
                             <button type="button" class="btn btn-default" data-dismiss="modal">
                                 <span class="glyphicon glyphicon-remove"></span> Cancel
                             </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#5cb85c; color:#fff;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <h4 class="modal-title custom_align" id="add_modal_heading">Add customer</h4>
+                </div>
+                <form method="post" action="customer.php">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="first_name_add">First Name:</label>
+                            <input type="text" class="form-control" id="first_name_add" name="first_name_add" placeholder="Enter first name">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name_add">Last Name:</label>
+                            <input type="text" class="form-control" id="last_name_add" name="last_name_add" placeholder="Enter last name">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone_add">Phone:</label>
+                            <input type="phone" class="form-control" id="phone_add" name="phone_add" placeholder="Enter phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="email_add">Email:</label>
+                            <input type="email" class="form-control" id="email_add" name="email_add" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="address_add">Address:</label>
+                            <input type="text" class="form-control" id="address_add" name="address_add" placeholder="Enter address">
+                        </div>
+                        <label>Member:</label>
+                        <label class="radio-inline">
+                            <input type="radio" id="member_yes_add" name="member_yes_add">Yes
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" id="member_no_add" name="member_no_add">No
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="add_confirm_button" name="add_confirm_button_name" type="submit" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-ok-sign"></span> Submit
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-remove"></span> Cancel
+                        </button>
                     </div>
                 </form>
             </div>

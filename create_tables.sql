@@ -6,8 +6,8 @@ CREATE TABLE `customer` (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
     FirstName VARCHAR(45) NOT NULL,
     LastName VARCHAR(45) NOT NULL,
-    Email VARCHAR(255),
-    Address VARCHAR(255),
+    Email VARCHAR(255) NOT NULL,
+    Address VARCHAR(255) NOT NULL,
     HasMembership BOOLEAN NOT NULL DEFAULT FALSE
 );
 
