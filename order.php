@@ -10,7 +10,7 @@ $pass = "play4679";
 $db = "marciadb";
 
 $mysqli = new mysqli($host, $user, $pass, $db);
-$query1 = "select serviceid, description, count(*) as num_row
+$query1 = "select serviceid, description
             from service";
 $services=$mysqli->query($query1);
 ?>
@@ -22,7 +22,7 @@ $services=$mysqli->query($query1);
         
         <?php
         $select= 'Service: <select name="action_type">';
-        while($rs=$services->fetch_array()){
+        while($rs=mysqli_fetch_array($services)){
             $select.='<option value="'.$rs[0].'">'.$rs[1].'</option>';
         }
         $select.='</select>';
