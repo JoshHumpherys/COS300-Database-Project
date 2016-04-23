@@ -31,12 +31,18 @@
                 $mysqli->query("DELETE FROM customer WHERE CustomerID = ".$_POST['delete_confirm_button_name']);
             }
             if(isset($_POST['edit_confirm_button_name'])) {
-                $query = "UPDATE customer SET FirstName = '".$_POST['first_name']."', LastName = '".$_POST['last_name']."', Email = '".$_POST['email']."', Address = '".$_POST['address']."', HasMembership = ".($_POST['member'] == '1'?'TRUE':'FALSE')." WHERE CustomerID = ".$_POST['edit_confirm_button_name'];
-                $mysqli->query($query);
+                $mysqli->query("UPDATE customer SET FirstName = '".$_POST['first_name']."', LastName = '".$_POST['last_name']."', Email = '".$_POST['email']."', Address = '".$_POST['address']."', HasMembership = ".($_POST['member'] == '1'?'TRUE':'FALSE')." WHERE CustomerID = ".$_POST['edit_confirm_button_name']);
+                $mysqli->query("UPDATE phone SET Phone = '".$_POST['phone']."' WHERE CustomerID = '".$_POST['edit_confirm_button_name']."' && Phone = '".$_POST['edit_customer_old_phone_name']."'");
             }
             if(isset($_POST['add_confirm_button_name'])) {
                 $mysqli->query("INSERT INTO customer VALUES(DEFAULT, '".$_POST['first_name_add']."', '".$_POST['last_name_add']."', '".$_POST['email_add']."', '".$_POST['address_add']."', ".($_POST['member_add'] == '1'?'TRUE':'FALSE').")");
                 $mysqli->query("INSERT INTO phone VALUES(".$mysqli->insert_id.", '".$_POST['phone_add']."')");
+            }
+            if(isset($_POST['delete_phone_confirm_button_name'])) {
+                $mysqli->query("DELETE FROM phone WHERE Phone = '".$_POST['delete_phone_confirm_button_name']."' && CustomerID = '".$_POST['delete_phone_customer_id_name']."'");
+            }
+            if(isset($_POST['add_phone_confirm_button_name'])) {
+                $mysqli->query("INSERT INTO phone VALUES ('".$_POST['add_phone_customer_id_name']."', '".$_POST['add_phone']."')");
             }
 
             $columns = "customer.CustomerID, FirstName, LastName, Email, Address, HasMembership, Phone";
@@ -69,12 +75,18 @@
                     <tr>
                         <td>'.$firstName.'</td>
                         <td>'.$lastName.'</td>
-                        <td>'.$phone.'</td>
+                        <td>'.$phone.''.($extraPhone?'
+                            <button class="btn btn-danger btn-xs" style="float:right;" data-title="Delete" data-toggle="modal" data-target="#delete_phone" onclick="javascript:$(\'#delete_phone_confirm_button\').attr(\'value\',\''.$phone.'\');$(\'#delete_phone_customer_id\').attr(\'value\',\''.$id.'\');">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>':'
+                            <button class="btn btn-success btn-xs" style="float:right;" data-title="Add" data-toggle="modal" data-target="#add_phone" onclick="javascript:$(\'#add_phone_confirm_button\').attr(\'value\',\''.$phone.'\');$(\'#add_phone_customer_id\').attr(\'value\',\''.$id.'\');">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>').'</td>
                         <td>'.$email.'</td>
                         <td>'.$address.'</td>
                         <td>'.($member==-1?'':($member==0?'No':'Yes')).'</td>'.(!$extraPhone?'
                         <td>
-                            <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="javascript:$(\'#first_name\').attr(\'value\',\''.$firstName.'\');$(\'#last_name\').attr(\'value\',\''.$lastName.'\');$(\'#phone\').attr(\'value\',\''.$phone.'\');$(\'#email\').attr(\'value\',\''.$email.'\');$(\'#address\').attr(\'value\',\''.$address.'\');document.getElementById(\'member_no\').checked='.$member.'==0;document.getElementById(\'member_yes\').checked=!'.$member.'==0;$(\'#edit_confirm_button\').attr(\'value\',\''.$id.'\');">
+                            <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="javascript:$(\'#first_name\').attr(\'value\',\''.$firstName.'\');$(\'#last_name\').attr(\'value\',\''.$lastName.'\');$(\'#phone\').attr(\'value\',\''.$phone.'\');$(\'#email\').attr(\'value\',\''.$email.'\');$(\'#address\').attr(\'value\',\''.$address.'\');document.getElementById(\'member_no\').checked='.$member.'==0;document.getElementById(\'member_yes\').checked=!'.$member.'==0;$(\'#edit_confirm_button\').attr(\'value\',\''.$id.'\');$(\'#edit_customer_old_phone\').attr(\'value\',\''.$phone.'\');">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </button>
                         </td>
@@ -158,6 +170,7 @@
                             <button id="edit_confirm_button" name="edit_confirm_button_name" type="submit" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-ok-sign"></span> Submit
                             </button>
+                            <input type="hidden" id="edit_customer_old_phone" name="edit_customer_old_phone_name">
                             <button type="button" class="btn btn-default" data-dismiss="modal">
                                 <span class="glyphicon glyphicon-remove"></span> Cancel
                             </button>
@@ -212,6 +225,62 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">
                             <span class="glyphicon glyphicon-remove"></span> Cancel
                         </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete_phone" tabindex="-1" role="dialog" aria-labelledby="delete_phone" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#d9534f; color:#fff;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <h4 class="modal-title custom_align" id="delete_phone_modal_heading">Delete this phone</h4>
+                </div>
+                <div class="modal-body">
+                    <div>Are you sure you want to delete this phone number?</div>
+                </div>
+                <div class="modal-footer">
+                    <form method="post" action="customer.php">
+                        <button id="delete_phone_confirm_button" name="delete_phone_confirm_button_name" type="submit" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-ok-sign"></span> Yes
+                        </button>
+                        <input type="hidden" id="delete_phone_customer_id" name="delete_phone_customer_id_name">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-remove"></span> No
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="add_phone" tabindex="-1" role="dialog" aria-labelledby="add_phone" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#5cb85c; color:#fff;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <h4 class="modal-title custom_align" id="add_phone_modal_heading">Add a phone</h4>
+                </div>
+
+                <form method="post" action="customer.php">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="add_phone">Phone:</label>
+                            <input type="phone" class="form-control" id="add_phone" name="add_phone" placeholder="Enter phone">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                            <button id="add_phone_confirm_button" name="add_phone_confirm_button_name" type="submit" class="btn btn-success">
+                                <span class="glyphicon glyphicon-ok-sign"></span> Yes
+                            </button>
+                            <input type="hidden" id="add_phone_customer_id" name="add_phone_customer_id_name">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                <span class="glyphicon glyphicon-remove"></span> No
+                            </button>
                     </div>
                 </form>
             </div>
