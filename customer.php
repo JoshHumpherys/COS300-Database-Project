@@ -31,11 +31,11 @@
                 $mysqli->query("DELETE FROM customer WHERE CustomerID = ".$_POST['delete_confirm_button_name']);
             }
             if(isset($_POST['edit_confirm_button_name'])) {
-                $query = "UPDATE customer SET FirstName = '".$_POST['first_name']."', LastName = '".$_POST['last_name']."', Email = '".$_POST['email']."', Address = '".$_POST['address']."', HasMembership = ".($_POST['member_yes'] == "on"?'TRUE':'FALSE')." WHERE CustomerID = ".$_POST['edit_confirm_button_name'];
+                $query = "UPDATE customer SET FirstName = '".$_POST['first_name']."', LastName = '".$_POST['last_name']."', Email = '".$_POST['email']."', Address = '".$_POST['address']."', HasMembership = ".($_POST['member'] == '1'?'TRUE':'FALSE')." WHERE CustomerID = ".$_POST['edit_confirm_button_name'];
                 $mysqli->query($query);
             }
             if(isset($_POST['add_confirm_button_name'])) {
-                $mysqli->query("INSERT INTO customer VALUES(DEFAULT, '".$_POST['first_name_add']."', '".$_POST['last_name_add']."', '".$_POST['email_add']."', '".$_POST['address_add']."', ".($_POST['member_yes_add'] == "on"?'TRUE':'FALSE').")");
+                $mysqli->query("INSERT INTO customer VALUES(DEFAULT, '".$_POST['first_name_add']."', '".$_POST['last_name_add']."', '".$_POST['email_add']."', '".$_POST['address_add']."', ".($_POST['member_add'] == '1'?'TRUE':'FALSE').")");
                 $mysqli->query("INSERT INTO phone VALUES(".$mysqli->insert_id.", '".$_POST['phone_add']."')");
             }
 
@@ -148,10 +148,10 @@
                         </div>
                         <label>Member:</label>
                         <label class="radio-inline">
-                            <input type="radio" id="member_yes" name="member_yes">Yes
+                            <input type="radio" id="member_yes" name="member" value="1">Yes
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" id="member_no" name="member_no">No
+                            <input type="radio" id="member_no" name="member" value="0">No
                         </label>
                     </div>
                     <div class="modal-footer">
@@ -199,10 +199,10 @@
                         </div>
                         <label>Member:</label>
                         <label class="radio-inline">
-                            <input type="radio" id="member_yes_add" name="member_yes_add">Yes
+                            <input type="radio" id="member_yes_add" name="member_add" value="1"> Yes
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" id="member_no_add" name="member_no_add">No
+                            <input type="radio" id="member_no_add" name="member_add" value="0"> No
                         </label>
                     </div>
                     <div class="modal-footer">
