@@ -3,26 +3,77 @@
 <?php require "header.php"; ?>
 <body>
 <div class="container">
-    <form action="index.php" method="post">
-        <select name="action_type">
-            <option value="add">Add</option>
-            <option value="update">Update</option>
-            <option value="delete">Delete</option>
-        </select>
-        Cust Id: <input type="number" , name="CustId" , min="0" , max="999" , step="1">
-        First Name: <input type="text" , name="FirstName" size="35">
-        Last Name: <input type="text" , name="LastName" , size="35">
-        <br>
-        Address: <input type="text" , name="Address" , size="35">
-        City: <input type="text" , name="City" , size="15">
-        Zip: <input type="text" , name="Zip" , size="5">
-        Phone: <input type="text" , name="Phone" , size="10">
-        <input type="submit" value="Send">
-    </form>
-    <?php
-    // set server access variables
-
-    ?>
+    <h2>Customers</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Member</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Josh</td>
+                    <td>Humpherys</td>
+                    <td>800-555-1234</td>
+                    <td>joshua.humpherys@gmail.com</td>
+                    <td>256 Hello World St</td>
+                    <td>Yes</td>
+                    <td>
+                        <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>David</td>
+                    <td>Reed</td>
+                    <td>706-555-8882</td>
+                    <td>david.reed@foobarbaz.com</td>
+                    <td>128 Asdf Rd</td>
+                    <td>No</td>
+                    <td>
+                        <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Josh</td>
+                    <td>Humpherys</td>
+                    <td>800-555-1234</td>
+                    <td>joshua.humpherys@gmail.com</td>
+                    <td>1024 Binary Dr</td>
+                    <td>Yes</td>
+                    <td>
+                        <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>
