@@ -15,7 +15,7 @@ CREATE TABLE `phone` (
     CustomerID INT,
     Phone VARCHAR(45),
     PRIMARY KEY (CustomerID, Phone),
-    FOREIGN KEY (CustomerID) REFERENCES `customer`(CustomerID) ON UPDATE RESTRICT
+    FOREIGN KEY (CustomerID) REFERENCES `customer`(CustomerID) ON UPDATE RESTRICT ON DELETE CASCADE
 );
 
 CREATE TABLE `order` (
@@ -25,7 +25,7 @@ CREATE TABLE `order` (
     PickupDate DATE,
     MethodOfPayment VARCHAR(45),
     CustomerID INT NOT NULL,
-    FOREIGN KEY (CustomerID) REFERENCES `customer`(CustomerID) ON UPDATE RESTRICT
+    FOREIGN KEY (CustomerID) REFERENCES `customer`(CustomerID) ON UPDATE RESTRICT ON DELETE CASCADE
 );
 
 CREATE TABLE `order_item` (
@@ -46,6 +46,6 @@ CREATE TABLE `order_item_has_service` (
     OrderItemID INT,
     ServiceID INT,
     PRIMARY KEY (OrderItemID, ServiceID),
-    FOREIGN KEY (OrderItemID) REFERENCES `order_item`(OrderItemID) ON UPDATE RESTRICT,
-    FOREIGN KEY (ServiceID) REFERENCES `service`(ServiceID) ON UPDATE RESTRICT
+    FOREIGN KEY (OrderItemID) REFERENCES `order_item`(OrderItemID) ON UPDATE RESTRICT ON DELETE CASCADE,
+    FOREIGN KEY (ServiceID) REFERENCES `service`(ServiceID) ON UPDATE RESTRICT ON DELETE CASCADE
 );
