@@ -3,7 +3,7 @@
 <?php require "header.php"; ?>
 <body>
 <div class="container" style="padding-top:15px;">
-    <button class="btn btn-success btn-lg" data-title="Add" data-toggle="modal" data-target="#add"><span class="glyphicon glyphicon-plus"></span> Add Customer</button>
+    <button style="margin-bottom:15px" class="btn btn-success btn-lg" data-title="Add" data-toggle="modal" data-target="#add"><span class="glyphicon glyphicon-plus"></span> Add Customer</button>
     <h2>Customers</h2>
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
