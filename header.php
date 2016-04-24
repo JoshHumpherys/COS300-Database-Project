@@ -17,8 +17,6 @@
                     href="customer.php">Customer</a></li>
             <li <?php if (basename($_SERVER['PHP_SELF']) == 'order.php') echo 'class="active"' ?>><a
                     href="order.php">Order</a></li>
-            <li <?php if (basename($_SERVER['PHP_SELF']) == 'pickup.php') echo 'class="active"' ?>><a
-                    href="pickup.php">Pickup</a></li>
             <li <?php if (basename($_SERVER['PHP_SELF']) == 'service.php') echo 'class="active"' ?>><a
                     href="service.php">Service</a></li>
         </ul>
