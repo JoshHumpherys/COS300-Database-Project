@@ -14,7 +14,6 @@
             die();
         }
     ?>
-    <button style="margin-bottom:15px" class="btn btn-success btn-lg" data-title="Add" data-toggle="modal" data-target="#add"><span class="glyphicon glyphicon-plus"></span> Add Order</button>
     <h2>Active Orders</h2>
     <?php
         if(isset($_POST['pickup_confirm_button_name'])) {
