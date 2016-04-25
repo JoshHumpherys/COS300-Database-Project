@@ -29,11 +29,11 @@
                     $query = 'SELECT CustomerID FROM `order`, order_item WHERE order_item.OrderID = `order`.OrderID AND `order`.OrderID = \''.$orderID.'\'';
                     $row = $mysqli->query($query)->fetch_array();
                     $customerID = $row[0];
-                    $query = 'SELECT COUNT(*) FROM customer LEFT JOIN `order` ON `order`.CustomerID = customer.CustomerID WHERE customer.CustomerID = \''.$customerID.'\' AND PickupDate IS NULL';
+                    $query = 'SELECT COUNT(*) FROM customer LEFT JOIN `order` ON `order`.CustomerID = customer.CustomerID WHERE customer.CustomerID = \''.$customerID.'\' AND PickupDate IS NOT NULL';
                     $result = $mysqli->query($query);
                     echo '<script type="text/javascript">window.onload=function(){$(\'#pickup_confirm\').modal();$(\'#total\').html(\'$'.$total.'\');';
                     if($row = $result->fetch_array()) {
-                        if(intval($row[0]) % 10 == 1 && intval($row[0]) != 0) {
+                        if(intval($row[0]) % 10 == 0 && intval($row[0]) != 0) {
                             echo '$(\'#percent_off_div\').attr(\'style\', \'display:block\');$(\'#percent_off_b\').html(\'$'.(intval($total)/10).'\');';
                         }
                     }
@@ -73,7 +73,7 @@
             </tr>
             <?php
                 $columns = "order.CustomerID, OrderID, FirstName, LastName, DropDate, PromiseDate, PickupDate";
-                $query = "SELECT ".$columns." FROM `order` LEFT JOIN customer ON customer.CustomerID = order.CustomerID";
+                $query = "SELECT ".$columns." FROM `order` LEFT JOIN customer ON customer.CustomerID = order.CustomerID ORDER BY LastName, FirstName";
                 $CUSTOMER_ID_INDEX = 0;
                 $ORDER_ID_INDEX = 1;
                 $FIRST_NAME_INDEX = 2;
@@ -144,7 +144,7 @@
             </tr>
             <?php
                 $columns = "order.CustomerID, OrderID, FirstName, LastName, DropDate, PromiseDate, PickupDate, MethodOfPayment";
-                $query = "SELECT ".$columns." FROM `order` LEFT JOIN customer ON customer.CustomerID = order.CustomerID";
+                $query = "SELECT ".$columns." FROM `order` LEFT JOIN customer ON customer.CustomerID = order.CustomerID ORDER BY LastName, FirstName";
                 $CUSTOMER_ID_INDEX = 0;
                 $ORDER_ID_INDEX = 1;
                 $FIRST_NAME_INDEX = 2;
@@ -172,7 +172,7 @@
                     if($customerID == $lastCustomerID) {
                         $firstName = $lastName = '';
                     }
-                    $lastID = $customerID;
+                    $lastCustomerID = $customerID;
                     echo '
                             <tr>
                                 <td>'.$firstName.'</td>
