@@ -30,11 +30,16 @@
                     $customerID = $row[0];
                     $query = 'SELECT COUNT(*) FROM customer LEFT JOIN `order` ON `order`.CustomerID = customer.CustomerID WHERE customer.CustomerID = \''.$customerID.'\' AND PickupDate IS NOT NULL';
                     $result = $mysqli->query($query);
-                    echo '<script type="text/javascript">window.onload=function(){$(\'#pickup_confirm\').modal();$(\'#total\').html(\'$'.$total.'\');';
+                    $discount = false;
                     if($row = $result->fetch_array()) {
                         if(intval($row[0]) % 10 == 0 && intval($row[0]) != 0) {
-                            echo '$(\'#percent_off_div\').attr(\'style\', \'display:block\');$(\'#percent_off_b\').html(\'$'.(intval($total)/10).'\');';
+                            $discount = true;
+                            $total /= 2;
                         }
+                    }
+                    echo '<script type="text/javascript">window.onload=function(){$(\'#pickup_confirm\').modal();$(\'#total\').html(\'$'.$total.'\');';
+                    if($discount) {
+                        echo '$(\'#percent_off_div\').attr(\'style\', \'display:block\');$(\'#percent_off_b\').html(\'$'.$total.'\');';
                     }
                     echo '}</script>';
                 }
@@ -263,7 +268,7 @@
                 <div id="pickup_confirm_body" class="modal-body">
                     <div>Thank you for doing business with us!</div>
                     <div>Your total comes to <b id="total"></b>.</div>
-                    <div id="percent_off_div" style="display:none">Because this was your 10th order you received 10% off! (<b id="percent_off_b"></b>)</div>
+                    <div id="percent_off_div" style="display:none">Because this was your 10th order you received 50% off! (<b id="percent_off_b"></b>)</div>
                 </div>
                 <div class="modal-footer">
                     <button id="pickup_confirm_okay_button" name="pickup_confirm_okay_button_name" data-dismiss="modal" class="btn btn-success">
