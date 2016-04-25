@@ -52,26 +52,16 @@ INSERT INTO `service` VALUES (DEFAULT, 'Wash cushion cover', 6.00, 3);
 INSERT INTO `service` VALUES (DEFAULT, 'Wash sofa cover', 8.00, 5);
 INSERT INTO `service` VALUES (DEFAULT, 'Wash sleeping bag', 20.00, 8);
 
-INSERT INTO `customer` VALUES (DEFAULT, 'Rene', 'Parker', 'reneparker22@gmail.com', '388 Warren Street
-Dekalb, IL 60115', DEFAULT);
-INSERT INTO `customer` VALUES (DEFAULT, 'Bobby', 'Weber', 'bobby.weber@gmail.com', '5175 Cambridge Court
-Greenville, NC 27834', DEFAULT);
-INSERT INTO `customer` VALUES (DEFAULT, 'Marcos', 'Green', 'marcos.green@yahoo.com', '5789 Franklin Court
-Stow, OH 44224', TRUE);
-INSERT INTO `customer` VALUES (DEFAULT, 'Clay', 'Cooper', 'claycooper@gmail.com', '131 Chapel Street
-Livingston, NJ 07039', DEFAULT);
-INSERT INTO `customer` VALUES (DEFAULT, 'Ian', 'Webb', 'ian.webb@gmail.com', '2139 Valley View Drive
-Vincentown, NJ 08088', DEFAULT);
-INSERT INTO `customer` VALUES (DEFAULT, 'Darryl', 'Sutton', 'darrylmsutton@gmail.com', '9044 Route 4
-Waterbury, CT 06705', TRUE);
-INSERT INTO `customer` VALUES (DEFAULT, 'Bridget', 'Miller', 'bmiller@outlook.com', '81 Court Street
-Huntsville, AL 35803', TRUE);
-INSERT INTO `customer` VALUES (DEFAULT, 'John', 'Norton', 'johnnorton1112@yahoo.com', '494 Smith Street
-Mountain View, CA 94043', TRUE);
-INSERT INTO `customer` VALUES (DEFAULT, 'Cody', 'Buchanan', 'cody.buchanan@gmail.com', '762 4th Street North
-Mount Juliet, TN 37122', DEFAULT);
-INSERT INTO `customer` VALUES (DEFAULT, 'Mitchell', 'Steele', 'mitchells@yahoo.com', '935 Cleveland Street
-Silver Spring, MD 20901', DEFAULT);
+INSERT INTO `customer` VALUES (DEFAULT, 'Rene', 'Parker', 'reneparker22@gmail.com', '388 Warren Street Dekalb, IL 60115', DEFAULT);
+INSERT INTO `customer` VALUES (DEFAULT, 'Bobby', 'Weber', 'bobby.weber@gmail.com', '5175 Cambridge Court Greenville, NC 27834', DEFAULT);
+INSERT INTO `customer` VALUES (DEFAULT, 'Marcos', 'Green', 'marcos.green@yahoo.com', '5789 Franklin Court Stow, OH 44224', TRUE);
+INSERT INTO `customer` VALUES (DEFAULT, 'Clay', 'Cooper', 'claycooper@gmail.com', '131 Chapel Street Livingston, NJ 07039', DEFAULT);
+INSERT INTO `customer` VALUES (DEFAULT, 'Ian', 'Webb', 'ian.webb@gmail.com', '2139 Valley View Drive Vincentown, NJ 08088', DEFAULT);
+INSERT INTO `customer` VALUES (DEFAULT, 'Darryl', 'Sutton', 'darrylmsutton@gmail.com', '9044 Route 4 Waterbury, CT 06705', TRUE);
+INSERT INTO `customer` VALUES (DEFAULT, 'Bridget', 'Miller', 'bmiller@outlook.com', '81 Court Street Huntsville, AL 35803', TRUE);
+INSERT INTO `customer` VALUES (DEFAULT, 'John', 'Norton', 'johnnorton1112@yahoo.com', '494 Smith Street Mountain View, CA 94043', TRUE);
+INSERT INTO `customer` VALUES (DEFAULT, 'Cody', 'Buchanan', 'cody.buchanan@gmail.com', '762 4th Street North Mount Juliet, TN 37122', DEFAULT);
+INSERT INTO `customer` VALUES (DEFAULT, 'Mitchell', 'Steele', 'mitchells@yahoo.com', '935 Cleveland StreetSilver Spring, MD 20901', DEFAULT);
 
 INSERT INTO `phone` VALUES(1, '(815) 437-0507');
 INSERT INTO `phone` VALUES(1, '(815) 182-9858');
