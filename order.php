@@ -82,7 +82,7 @@
                     if($customerID == $lastCustomerID) {
                         $firstName = $lastName = '';
                     }
-                    $lastID = $customerID;
+                    $lastCustomerID = $customerID;
                     echo '
                         <tr>
                             <td>'.$firstName.'</td>
