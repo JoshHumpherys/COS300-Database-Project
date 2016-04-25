@@ -140,7 +140,8 @@
                     };
                     $row = $mysqli->query("SELECT PromiseDate FROM `order` WHERE OrderID = ".$orderID)->fetch_array();
                     $time = new DateTime($row[0]);
-                    $time->add(new DateInterval('PT'.(($mysqli->query("SELECT HoursRequired FROM service WHERE ServiceID = ".$_POST['service_name'])->fetch_array()[0])*intval($_POST['quantity_name'])).'H'));
+                    $row = $mysqli->query("SELECT HoursRequired FROM service WHERE ServiceID = ".$_POST['service_name'])->fetch_array();
+                    $time->add(new DateInterval('PT'.(($row[0])*intval($_POST['quantity_name'])).'H'));
                     $query = 'UPDATE `order` SET PromiseDate = \''.$time->format("Y-m-d H:i:s").'\' WHERE OrderID = '.$orderID;
                     $mysqli->query($query);
                 }
