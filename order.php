@@ -16,6 +16,49 @@
     ?>
     <button style="margin-bottom:15px" class="btn btn-success btn-lg" data-title="Add" data-toggle="modal" data-target="#add"><span class="glyphicon glyphicon-plus"></span> Add Order</button>
     <h2>Active Orders</h2>
+    <?php
+        if(isset($_POST['pickup_confirm_button_name'])) {
+            $orderID = $_POST['pickup_confirm_button_name'];
+            if($mysqli->query("UPDATE `order` SET PickupDate = NOW(), MethodOfPayment = '".$_POST['pickup_payment_method_name']."' WHERE OrderID = ".$_POST['pickup_confirm_button_name'])) {
+                echo '
+                <div class="alert alert-success">
+                      <strong>Success!</strong> Order picked up successfully.
+                </div>';
+                if($row = $mysqli->query('SELECT SUM(Price * Quantity) FROM order_item LEFT JOIN service ON order_item.ServiceID = service.ServiceID WHERE OrderID = \''.$orderID.'\'')->fetch_array()) {
+                    $total = $row[0];
+                    $query = 'SELECT CustomerID FROM `order`, order_item WHERE order_item.OrderID = `order`.OrderID AND `order`.OrderID = \''.$orderID.'\'';
+                    $customerID = $mysqli->query($query)->fetch_array()[0];
+                    $query = 'SELECT COUNT(*) FROM customer LEFT JOIN `order` ON `order`.CustomerID = customer.CustomerID WHERE customer.CustomerID = \''.$customerID.'\' AND PickupDate IS NULL';
+                    $result = $mysqli->query($query);
+                    echo '<script type="text/javascript">window.onload=function(){$(\'#pickup_confirm\').modal();$(\'#total\').html(\'$'.$total.'\');';
+                    if($row = $result->fetch_array()) {
+                        if(intval($row[0]) % 10 == 1 && intval($row[0]) != 0) {
+                            echo '$(\'#percent_off_div\').attr(\'style\', \'display:block\');$(\'#percent_off_b\').html(\'$'.(intval($total)/10).'\');';
+                        }
+                    }
+                    echo '}</script>';
+                }
+            } else {
+                echo '
+                <div class="alert alert-danger">
+                      <strong>Error!</strong> Failed to pick up order.
+                </div>';
+            };
+        }
+        if(isset($_POST['delete_confirm_button_name'])) {
+            if($mysqli->query("DELETE FROM `order` WHERE OrderID = '".$_POST['delete_confirm_button_name']."'")) {
+                echo '
+                <div class="alert alert-success">
+                      <strong>Success!</strong> Order deleted successfully.
+                </div>';
+            } else {
+                echo '
+                <div class="alert alert-danger">
+                      <strong>Error!</strong> Failed to delete order.
+                </div>';
+            };
+        }
+    ?>
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <tr>
@@ -28,33 +71,6 @@
                 <th>Delete</th>
             </tr>
             <?php
-                if(isset($_POST['pickup_confirm_button_name'])) {
-                    if($mysqli->query("UPDATE `order` SET PickupDate = NOW(), MethodOfPayment = '".$_POST['pickup_payment_method_name']."' WHERE OrderID = ".$_POST['pickup_confirm_button_name'])) {
-                        echo '
-                        <div class="alert alert-success">
-                              <strong>Success!</strong> Order picked up successfully.
-                        </div>';
-                    } else {
-                        echo '
-                        <div class="alert alert-danger">
-                              <strong>Error!</strong> Failed to pick up order.
-                        </div>';
-                    };
-                }
-                if(isset($_POST['delete_confirm_button_name'])) {
-                    if($mysqli->query("DELETE FROM `order` WHERE OrderID = '".$_POST['delete_confirm_button_name']."'")) {
-                        echo '
-                        <div class="alert alert-success">
-                              <strong>Success!</strong> Order deleted successfully.
-                        </div>';
-                    } else {
-                        echo '
-                        <div class="alert alert-danger">
-                              <strong>Error!</strong> Failed to delete order.
-                        </div>';
-                    };
-                }
-
                 $columns = "order.CustomerID, OrderID, FirstName, LastName, DropDate, PromiseDate, PickupDate";
                 $query = "SELECT ".$columns." FROM `order` LEFT JOIN customer ON customer.CustomerID = order.CustomerID";
                 $CUSTOMER_ID_INDEX = 0;
@@ -95,9 +111,11 @@
                                 </button>
                             </td>
                             <td>
-                                <button class="btn btn-primary btn-xs" data-title="Info" data-toggle="modal" data-target="#info">
-                                    <span class="glyphicon glyphicon-info-sign"></span>
-                                </button>
+                                <form method="post" action="order_detail.php">
+                                    <button class="btn btn-primary btn-xs" id="view_details" name="view_details_name" type="submit" value="'.$orderID.'">
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                    </button>
+                                </form>
                             </td>
                             <td>
                                 <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick="javascript:$(\'#delete_confirm_button\').attr(\'value\',\''.$orderID.'\')">
@@ -163,9 +181,11 @@
                                 <td>'.$pickupDate.'</td>
                                 <td>'.$methodOfPayment.'</td>
                                 <td>
-                                    <button class="btn btn-primary btn-xs" data-title="Info" data-toggle="modal" data-target="#info">
-                                        <span class="glyphicon glyphicon-info-sign"></span>
-                                    </button>
+                                    <form method="post" action="order_detail.php">
+                                        <button class="btn btn-primary btn-xs" id="view_details" name="view_details_name" type="submit" value="'.$orderID.'">
+                                            <span class="glyphicon glyphicon-info-sign"></span>
+                                        </button>
+                                    </form>
                                 </td>
                                 <td>
                                     <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick="javascript:$(\'#delete_confirm_button\').attr(\'value\',\''.$orderID.'\')">
@@ -220,15 +240,36 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                            <button id="pickup_confirm_button" name="pickup_confirm_button_name" type="submit" class="btn btn-success">
-                                <span class="glyphicon glyphicon-ok-sign"></span> Yes
-                            </button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">
-                                <span class="glyphicon glyphicon-remove"></span> No
-                            </button>
-                        </form>
+                        <button id="pickup_confirm_button" name="pickup_confirm_button_name" type="submit" class="btn btn-success">
+                            <span class="glyphicon glyphicon-ok-sign"></span> Yes
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-remove"></span> No
+                        </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="pickup_confirm" tabindex="-1" role="dialog" aria-labelledby="pickup_confirm" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#5cb85c; color:#fff;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <h4 class="modal-title custom_align" id="pickup_modal_heading">Pick-Up Successful</h4>
+                </div>
+                <div id="pickup_confirm_body" class="modal-body">
+                    <div>Thank you for doing business with us!</div>
+                    <div>Your total comes to <b id="total"></b>.</div>
+                    <div id="percent_off_div" style="display:none">Because this was your 10th order you received 10% off! (<b id="percent_off_b"></b>)</div>
+                </div>
+                <div class="modal-footer">
+                    <button id="pickup_confirm_okay_button" name="pickup_confirm_okay_button_name" data-dismiss="modal" class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok-sign"></span> Okay
+                    </button>
+                </div>
             </div>
         </div>
     </div>
