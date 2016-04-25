@@ -27,7 +27,8 @@
                 if($row = $mysqli->query('SELECT SUM(Price * Quantity) FROM order_item LEFT JOIN service ON order_item.ServiceID = service.ServiceID WHERE OrderID = \''.$orderID.'\'')->fetch_array()) {
                     $total = $row[0];
                     $query = 'SELECT CustomerID FROM `order`, order_item WHERE order_item.OrderID = `order`.OrderID AND `order`.OrderID = \''.$orderID.'\'';
-                    $customerID = $mysqli->query($query)->fetch_array()[0];
+                    $row = $mysqli->query($query)->fetch_array();
+                    $customerID = $row[0];
                     $query = 'SELECT COUNT(*) FROM customer LEFT JOIN `order` ON `order`.CustomerID = customer.CustomerID WHERE customer.CustomerID = \''.$customerID.'\' AND PickupDate IS NULL';
                     $result = $mysqli->query($query);
                     echo '<script type="text/javascript">window.onload=function(){$(\'#pickup_confirm\').modal();$(\'#total\').html(\'$'.$total.'\');';
