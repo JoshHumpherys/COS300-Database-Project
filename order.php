@@ -34,6 +34,19 @@
                 if(isset($_POST['add_confirm_button_name'])) {
                     // TODO write query
                 }
+                if(isset($_POST['delete_confirm_button_name'])) {
+                    if($mysqli->query("DELETE FROM `order` WHERE OrderID = '".$_POST['delete_confirm_button_name']."'")) {
+                        echo '
+                        <div class="alert alert-success">
+                              <strong>Success!</strong> Order deleted successfully.
+                        </div>';
+                    } else {
+                        echo '
+                        <div class="alert alert-danger">
+                              <strong>Error!</strong> Failed to delete order.
+                        </div>';
+                    };
+                }
 
                 $columns = "order.CustomerID, OrderID, FirstName, LastName, DropDate, PromiseDate, PickupDate";
                 $query = "SELECT ".$columns." FROM `order` LEFT JOIN customer ON customer.CustomerID = order.CustomerID";
@@ -173,74 +186,31 @@
             ?>
         </table>
     </div>
-    <!--
-<?php require "connect.php"; ?>
-<?php
-$mysqli = new mysqli($host, $user, $pass, $db);
-$query1 = "select serviceid, description
-            from service";
-$services=$mysqli->query($query1);
-?>
-    <form action="order.php" method="post">
-        <H1>Add Order</H1>
-
-        First Name: <input type="text" , name="FirstName" size="35">
-        Last Name: <input type="text" , name="LastName" , size="35">
-
-        <?php
-        $select= 'Service: <select name="action_type">';
-        while($rs=mysqli_fetch_array($services)){
-            $select.='<option value="'.$rs[0].'">'.$rs[1].'</option>';
-        }
-        $select.='</select>';
-        echo $select;
-        ?>
-        Type Of Payment: <select name="payment_type">
-            <option value="Credit">Credit</option>
-            <option value="Debit">Debit</option>
-            <option value="Cash">Cash</option>
-            <option value="Check">Check</option>
-        </select>
-        <input type="submit" , name="addOrder" , value="Add">
-    </form>
-    <?php
-
-
-    if (mysqli_connect_errno()) {
-        die("Unable to connect!");
-    }
-    if(isset($_POST["addOrder"])){
-        $firstName=$_POST["FirstName"];
-        $lastName=$_POST["LastName"];
-        $service=$_POST["action_type"];
-        $payment=$_POST["payment_type"];
-        date_default_timezone_set("America/New_York");
-        $cur_date=date('Y-m-d-h');
-        $query2 = "SELECT customerID 
-                    FROM customer 
-                    WHERE FirstName = '".$firstName."'
-                    and LastName = '".$lastName."'";
-        $result = $mysqli->query($query2);
-        $query3 ="Select hoursrequired
-                from service
-                where serviceid = '".$service."'";
-        $result2 = $mysqli->query($query3);
-        $hourstoadd =$result2->fetch_array();
-        $addedTime=$hourstoadd[0]+date('h');
-        $promisedtime=new DateTime($cur_date);
-        $promisedtime->add(new DateInterval('PT'.$addedTime.'H'));
-        $promisedate=$promisedtime->format('Y-m-d-h');
-        if(!($row = $result->fetch_array())){
-            echo 'Customer does not exist. Please go to customer tab and make an account';
-        }
-        else{
-            $customerID = $row[0];
-            $query4 = "insert into `order`(dropdate, promisedate, methodofPayment,customerID) values('$cur_date','$promisedate','$payment','.$customerID.');";
-            $mysqli->query($query4);
-        }
-    }
-    ?>
-    -->
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="delete" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#d9534f; color:#fff;">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <h4 class="modal-title custom_align" id="delete_phone_modal_heading">Delete this order</h4>
+                </div>
+                <div class="modal-body">
+                    <div>Are you sure you want to delete this order?</div>
+                </div>
+                <div class="modal-footer">
+                    <form method="post" action="order.php">
+                        <button id="delete_confirm_button" name="delete_confirm_button_name" type="submit" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-ok-sign"></span> Yes
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-remove"></span> No
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
