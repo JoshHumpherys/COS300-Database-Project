@@ -3,6 +3,17 @@
 <?php require "header.php"; ?>
 <body>
 <div class="container" style="padding-top:15px;">
+    <?php require "connect.php"; ?>
+    <?php
+    $mysqli = new mysqli($host, $user, $pass, $db);
+    if (mysqli_connect_errno()) {
+        echo '
+                    <div class="alert alert-danger">
+                          <strong>Error!</strong> Unable to connect to database.
+                    </div>';
+        die();
+    }
+    ?>
     <button style="margin-bottom:15px" class="btn btn-success btn-lg" data-title="Add" data-toggle="modal" data-target="#add"><span class="glyphicon glyphicon-plus"></span> Add Order</button>
     <h2>Active Orders</h2>
     <div class="table-responsive">
@@ -17,15 +28,6 @@
                 <th>Delete</th>
             </tr>
             <?php
-                $host = "localhost";
-                $user = "Hunt";
-                $pass = "PW300";
-                $db = "marciadb";
-                $mysqli = new mysqli($host, $user, $pass, $db);
-                if (mysqli_connect_errno()) {
-                    die("Unable to connect!");
-                }
-
                 if(isset($_POST['pickup_confirm_button_name'])) {
                     // TODO write query
                 }
@@ -102,11 +104,8 @@
                 <th>View Details</th>
                 <th>Delete</th>
             </tr>
+            <?php require "connect.php"; ?>
             <?php
-            $host = "localhost";
-            $user = "Hunt";
-            $pass = "PW300";
-            $db = "marciadb";
             $mysqli = new mysqli($host, $user, $pass, $db);
             if (mysqli_connect_errno()) {
                 die("Unable to connect!");
@@ -175,12 +174,8 @@
         </table>
     </div>
     <!--
+<?php require "connect.php"; ?>
 <?php
-$host = "localhost";
-$user = "Hunt";
-$pass = "PW300";
-$db = "marciadb";
-
 $mysqli = new mysqli($host, $user, $pass, $db);
 $query1 = "select serviceid, description
             from service";

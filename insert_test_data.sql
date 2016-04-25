@@ -88,8 +88,11 @@ INSERT INTO `phone` VALUES(8, '(650) 563-8312');
 INSERT INTO `phone` VALUES(9, '(615) 868-5165');
 INSERT INTO `phone` VALUES(10, '(240) 553-5636');
 
-INSERT INTO `order` VALUES(DEFAULT, '2016-04-19', NULL, NULL, NULL, 1);
-INSERT INTO `order_item` VALUES(DEFAULT, 3, NULL, NULL);
-INSERT INTO `order_item` VALUES(DEFAULT, 1, NULL, NULL);
-INSERT INTO `order_item_has_service` VALUES(1, 1);
-INSERT INTO `order_item_has_service` VALUES(1, 2);
+# CALL order_insert_procedure(1);
+# CALL order_insert_procedure(1);
+# CALL order_insert_procedure(1);
+# CALL order_insert_procedure(2);
+# CALL order_insert_procedure(5);
+INSERT INTO `order` VALUES(DEFAULT, NOW(), NOW(), NULL, NULL, 1);
+# INSERT INTO `order_item` VALUES(DEFAULT, 3, NULL, NULL, 1, 1);
+# INSERT INTO `order_item` VALUES(DEFAULT, 1, NULL, NULL, 1, 2);

@@ -3,6 +3,17 @@
 <?php require "header.php"; ?>
 <body>
 <div class="container" style="padding-top:15px">
+    <?php require "connect.php"; ?>
+    <?php
+    $mysqli = new mysqli($host, $user, $pass, $db);
+    if (mysqli_connect_errno()) {
+        echo '
+                    <div class="alert alert-danger">
+                          <strong>Error!</strong> Unable to connect to database.
+                    </div>';
+        die();
+    }
+    ?>
     <button style="margin-bottom:15px" class="btn btn-success btn-lg" data-title="Add" data-toggle="modal" data-target="#add"><span class="glyphicon glyphicon-plus"></span> Add Service</button>
     <h2>Services</h2>
     <table class="table table-bordered table-striped">
@@ -13,107 +24,97 @@
             <th>Edit</th>
             <th>Delete</th>
         </tr>
-    <?php
-        $host = "localhost";
-        $user = "Hunt";
-        $pass = "PW300";
-        $db = "marciadb";
-        $mysqli = new mysqli($host, $user, $pass, $db);
+        <?php
+            if(isset($_POST['add_confirm_button_name'])){
+                $description = $_POST['description_add_name'];
+                $price = $_POST['price_add_name'];
+                $hours = $_POST['hours_add_name'];
 
-        if (mysqli_connect_errno()) {
-            die("Unable to connect!");
-        }
+                $query = "INSERT INTO service VALUES (DEFAULT, '".$description."', '".$price."','".$hours."')";
 
-        if(isset($_POST['add_confirm_button_name'])){
-            $description = $_POST['description_add_name'];
-            $price = $_POST['price_add_name'];
-            $hours = $_POST['hours_add_name'];
+                 if ($mysqli->query($query) === TRUE) {
+                     echo '
+                    <div class="alert alert-success">
+                          <strong>Success!</strong> New record created successfully.
+                    </div>';
+                 } else {
+                     echo '
+                    <div class="alert alert-danger">
+                          <strong>Error!</strong> Failed to create new record.
+                    </div>';
+                 }
+            } else if(isset($_POST['edit_confirm_button_name'])) {
+                $id = $_POST['edit_confirm_button_name'];
+                $description = $_POST['description_edit_name'];
+                $price = $_POST['price_edit_name'];
+                $hours = $_POST['hours_edit_name'];
 
-            $query = "INSERT INTO service VALUES (DEFAULT, '".$description."', '".$price."','".$hours."')";
+                $query = "UPDATE service SET Description = '".$description."', Price = '".$price."', HoursRequired = '".$hours."' WHERE ServiceID = '".$id."'";
 
-             if ($mysqli->query($query) === TRUE) {
-                 echo '
-                <div class="alert alert-success">
-                      <strong>Success!</strong> New record created successfully.
-                </div>';
-             } else {
-                 echo '
-                <div class="alert alert-danger">
-                      <strong>Error!</strong> Failed to create new record.
-                </div>';
-             }
-        } else if(isset($_POST['edit_confirm_button_name'])) {
-            $id = $_POST['edit_confirm_button_name'];
-            $description = $_POST['description_edit_name'];
-            $price = $_POST['price_edit_name'];
-            $hours = $_POST['hours_edit_name'];
-
-            $query = "UPDATE service SET Description = '".$description."', Price = '".$price."', HoursRequired = '".$hours."' WHERE ServiceID = '".$id."'";
-
-            if ($mysqli->query($query) === TRUE) {
-                echo '
-                <div class="alert alert-success">
-                      <strong>Success!</strong> Record updated successfully.
-                </div>';
-            } else {
-                echo '
-                <div class="alert alert-danger">
-                      <strong>Error!</strong> Failed to update record.
-                </div>';
-            }
-        } else if (isset($_POST['delete_confirm_button_name'])) {
-            $id = $_POST['delete_confirm_button_name'];
-
-            $query = "DELETE FROM service WHERE ServiceID=".$id."";
-
-            if ($mysqli->query($query) === TRUE) {
-                echo '
-                <div class="alert alert-success">
-                      <strong>Success!</strong> Record deleted successfully.
-                </div>';
-            } else {
-                echo '
-                <div class="alert alert-danger">
-                      <strong>Error!</strong> Failed to delete record.
-                </div>';
-            }
-        }
-
-        $query = "SELECT ServiceID, Description, Price, HoursRequired FROM service";
-        $SERVICE_ID_INDEX = 0;
-        $DESCRIPTION_INDEX = 1;
-        $PRICE_INDEX = 2;
-        $HOURS_REQUIRED_INDEX = 3;
-        if ($result = $mysqli->query($query)) {
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_array()) {
-                    $id = $row[$SERVICE_ID_INDEX];
-                    $description = $row[$DESCRIPTION_INDEX];
-                    $price = $row[$PRICE_INDEX];
-                    $hours = $row[$HOURS_REQUIRED_INDEX];
+                if ($mysqli->query($query) === TRUE) {
                     echo '
-                        <tr>
-                            <td>'.$description.'</td>
-                            <td>'.$price.'</td>
-                            <td>'.$hours.'</td>
-                            <td>
-                                <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="javascript:$(\'#edit_confirm_button\').attr(\'value\',\''.$id.'\');$(\'#description_edit\').attr(\'value\',\''.$description.'\');$(\'#price_edit\').attr(\'value\',\''.$price.'\');$(\'#hours_edit\').attr(\'value\',\''.$hours.'\');">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                </button>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick="javascript:$(\'#delete_confirm_button\').attr(\'value\',\''.$id.'\');">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
-                            </td>
-                        </tr>
-                    ';
+                    <div class="alert alert-success">
+                          <strong>Success!</strong> Record updated successfully.
+                    </div>';
+                } else {
+                    echo '
+                    <div class="alert alert-danger">
+                          <strong>Error!</strong> Failed to update record.
+                    </div>';
+                }
+            } else if (isset($_POST['delete_confirm_button_name'])) {
+                $id = $_POST['delete_confirm_button_name'];
+
+                $query = "DELETE FROM service WHERE ServiceID=".$id."";
+
+                if ($mysqli->query($query) === TRUE) {
+                    echo '
+                    <div class="alert alert-success">
+                          <strong>Success!</strong> Record deleted successfully.
+                    </div>';
+                } else {
+                    echo '
+                    <div class="alert alert-danger">
+                          <strong>Error!</strong> Failed to delete record.
+                    </div>';
                 }
             }
-            $result->close();
-        }
-        $mysqli->close();
-    ?>
+
+            $query = "SELECT ServiceID, Description, Price, HoursRequired FROM service";
+            $SERVICE_ID_INDEX = 0;
+            $DESCRIPTION_INDEX = 1;
+            $PRICE_INDEX = 2;
+            $HOURS_REQUIRED_INDEX = 3;
+            if ($result = $mysqli->query($query)) {
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_array()) {
+                        $id = $row[$SERVICE_ID_INDEX];
+                        $description = $row[$DESCRIPTION_INDEX];
+                        $price = $row[$PRICE_INDEX];
+                        $hours = $row[$HOURS_REQUIRED_INDEX];
+                        echo '
+                            <tr>
+                                <td>'.$description.'</td>
+                                <td>'.$price.'</td>
+                                <td>'.$hours.'</td>
+                                <td>
+                                    <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="javascript:$(\'#edit_confirm_button\').attr(\'value\',\''.$id.'\');$(\'#description_edit\').attr(\'value\',\''.$description.'\');$(\'#price_edit\').attr(\'value\',\''.$price.'\');$(\'#hours_edit\').attr(\'value\',\''.$hours.'\');">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick="javascript:$(\'#delete_confirm_button\').attr(\'value\',\''.$id.'\');">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        ';
+                    }
+                }
+                $result->close();
+            }
+            $mysqli->close();
+        ?>
     </table>
     <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
         <div class="modal-dialog">
